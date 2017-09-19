@@ -2,31 +2,25 @@ local string_format, http_Fetch, player_GetHumans, string_find, string_lower = s
 local ipairs, type, IsValid, util_SteamIDFrom64 = ipairs, type, IsValid, util.SteamIDFrom64
 local tag = "[proxyblocker]"
 
-local function FindPlayer(yep)
-	if (type(yep) == "string") then
-		for k, v in ipairs(player_GetHumans()) do
-			if (string_find(string_lower(v:Name()), string_lower(yep))) then
-				return v
-			elseif (string_find(string_lower(v:SteamID()), string_lower(yep))) then
+local function FindPlayer(identifier)
+	if (type(identifier) == "string") then
+		for _, v in ipairs(player_GetHumans()) do
+			if (string_find(string_lower(v:Name()), string_lower(identifier)) or string_find(string_lower(v:SteamID()), string_lower(identifier))) then
 				return v
 			end
 		end
-	elseif (type(yep) == "number") then
-		for k, v in ipairs(player_GetHumans()) do
-			if (string_find(v:Name(), yep)) then
-				return v
-			elseif (string_find(v:SteamID64(), yep)) then
-				return v
-			elseif (string_find(v:SteamID(), yep)) then
+	elseif (type(identifier) == "number") then
+		for _, v in ipairs(player_GetHumans()) do
+			if (string_find(v:Name(), identifier) or string_find(v:SteamID64(), identifier) or string_find(v:SteamID(), identifier)) then
 				return v
 			end
 		end
 		
-		if (IsValid(player_GetHumans()[yep])) then
-			return player_GetHumans()[yep]
+		if (IsValid(player_GetHumans()[identifier])) then
+			return player_GetHumans()[identifier]
 		end
 	else
-		print("FindPlayer: Search yep has unexpected value type! (string expected, got "..type(yep)..")")
+		print("FindPlayer: Search identifier has unexpected value type! (string expected, got "..type(identifier)..")")
 	end
 end
 
