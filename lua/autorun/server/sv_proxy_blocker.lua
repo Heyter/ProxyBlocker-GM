@@ -3,7 +3,7 @@ local string.format, http_Fetch = string.format, http.Fetch
 local tag = "[proxyblocker]"
 
 hook.Add("CheckPassword", "ProxyBlocker_Cpassword", function(sid64, ip, sPass, enteredPass, name)
-	local steamid = util.SteamIDFrom64(steamid64)
+	local steamid = util.SteamIDFrom64(sid64)
 	local url = string_format("http://proxy.mind-media.com/block/proxycheck.php?ip=%s", ip)
 	
 	http_Fetch(url, function(info)
